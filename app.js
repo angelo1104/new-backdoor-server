@@ -37,6 +37,9 @@ app.post("/command", (req, res)=> {
 
 io.on('connection', function(socket) {
    console.log('A user connected');
+   db.collection("status").doc("status").update({
+       connected: true
+   })
 
    socket.onAny(async (event, ...args) => {
        if (event !== "message") return
@@ -45,6 +48,7 @@ io.on('connection', function(socket) {
                 output: args
             })
 
+
             console.log("added to db.")
         }catch (e) {
             console.log("error while adding to db", e)
@@ -52,6 +56,9 @@ io.on('connection', function(socket) {
    })
    //Whenever someone disconnects this piece of code executed
    socket.on('disconnect', function () {
+    const da = db.collection("status").doc("status").update({
+        connected: false
+    })
       console.log('A user disconnected');
    });
 });

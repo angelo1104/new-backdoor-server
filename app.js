@@ -45,7 +45,8 @@ io.on('connection', function(socket) {
        if (event !== "message") return
         try {
             const data = await db.collection("logs").add({
-                output: args
+                output: args,
+                timestamp: new Date().getTime()
             })
 
 
